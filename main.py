@@ -2,7 +2,7 @@
 
 import argparse
 
-from dns import start_server
+import dns
 from hosts import parse_hosts
 
 if __name__ == '__main__':
@@ -16,4 +16,5 @@ if __name__ == '__main__':
     defs = parse_hosts(args.hosts)
     if args.debug:
         print(defs)
-    start_server(defs,(args.address,args.port),args.debug)
+    server = dns.UDPServer(defs,(args.address,args.port),args.debug)
+    server.start()
