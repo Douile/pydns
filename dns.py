@@ -66,7 +66,7 @@ class DNSPacket:
         return 'DNS {0} ({1}) opcode: {2}\n{4} questions {5} answers {6} authorities {7} additionals\n{3}'.format(type,self.id,OPCODE_DEFS.get(self.opcode),qs,len(self.questions),len(self.answers),len(self.authority),len(self.addition))
     def __bytes__(self):
         h = bitpack('14111134',self.qr,self.opcode,self.authorative,self.truncated,self.recursive_desired,self.recursive_avail,0,self.rcode)
-        print('h ',h)
+        # print('h ',h)
         headers = struct.pack('>HHHHHH',self.id,h,len(self.questions),len(self.answers),len(self.authority),len(self.addition))
         data = b''
         for r in self.questions+self.answers+self.authority+self.addition:
@@ -257,11 +257,11 @@ def dummy_response(req):
     res = DNSPacket((req.id,1,req.opcode,req.authorative,req.truncated,req.recursive_desired,req.recursive_avail,0,req.rcode),req.questions,ans,[],[])
     return res
 
-if __name__ == '__main__':
+def start_server(bindings,addr=('127.0.0.1',53),debug=False):
     sock = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
     sock.settimeout(0)
-    sock.bind(ADDR)
-    print('Listening on {0}'.format(ADDR[0]))
+    sock.bind(addr)
+    print('Listening on {0}:{1}'.format(addr[0],addr[1]))
     while 1:
         try:
             data, addr = sock.recvfrom(1024)
@@ -269,16 +269,22 @@ if __name__ == '__main__':
             try:
                 sleep(0.01)
             except KeyboardInterrupt:
-                print('Closing')
+                print('Shutting down...')
                 break
             continue
         print('Request from {0}'.format(addr))
         req = DNSPacket.fromBytes(data)
-        print(req)
+        if debug:
+            print(req)
         if len(req.questions) > 0:
-            if req.questions[0].rname != b'home':
-                res = dummy_response(req)
+            answers = []
+            for question in req.questions:
+                name = str(question.names)
+                if name in bindings:
+                    answers.append(ARecord(question.names,bindings[name]))
+            res = DNSPacket((req.id,1,req.opcode,req.authorative,req.truncated,req.recursive_desired,req.recursive_avail,0,req.rcode),req.questions,answers,[],[])
+            if debug:
                 print(res)
                 print(data)
                 print(bytes(res))
-                sock.sendto(bytes(res),addr)
+            sock.sendto(bytes(res),addr)
