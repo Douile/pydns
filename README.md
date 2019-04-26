@@ -5,7 +5,8 @@ _A fully python 3 implementation of a DNS server_
 ## Notes
 + At the moment the only records supported are IPV4 A records (however the main codebase is there to support others)
 + TTL will be set to 0 as not to corrupt cache with bad records, in the future this can be changed
-+ Must run as root/admin to bind port 53 (any port < 1000)
++ Sometimes must run as root/admin to bind port 53 (any port < 1000)
++ This "server" only supports UDP based DNS requests (ATM), and will not make actual DNS queries to retrieve actual results: the intention of this "server" is to send fake addresses back to clients that send requests to it based on the contents of the given `hosts.txt` file
 
 ## Hosts
 You can setup hosts in a `hosts.txt` file in the format
