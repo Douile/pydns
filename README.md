@@ -5,6 +5,7 @@ _A fully python 3 implementation of a DNS server_
 ## Notes
 + At the moment the only records supported are IPV4 A records (however the main codebase is there to support others)
 + TTL will be set to 0 as not to corrupt cache with bad records, in the future this can be changed
++ Must run as root/admin to bind port 53 (any port < 1000)
 
 ## Hosts
 You can setup hosts in a `hosts.txt` file in the format
