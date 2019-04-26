@@ -28,3 +28,9 @@ class ARecord(Record):
     def __init__(self,name,addr):
         rdata = struct.pack('>I',addr)
         super().__init__(name,I_TYPE_DEFS.get('A'),I_CLASS_DEFS.get('IN'),0,rdata)
+
+class TXTRecord(Record):
+    def __init__(self,name,content):
+        rdata = bytes(content,'utf-8')
+        rdata = struct.pack('>H',len(rdata))+rdata
+        super().__init__(name,I_TYPE_DEFS.get('TXT'),I_CLASS_DEFS.get('IN'),0,rdata)

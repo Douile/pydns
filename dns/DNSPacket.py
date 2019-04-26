@@ -36,7 +36,8 @@ class DNSPacket:
         data = b''
         for r in self.questions+self.answers+self.authority+self.addition:
             data+=bytes(r)
-        return headers+data
+        packet = headers+data
+        return packet
     @staticmethod
     def fromBytes(data):
         headers, questions, answers, authority, additional = unpack(data)
