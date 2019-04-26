@@ -1,4 +1,3 @@
-ADDR = ('192.168.1.200',53)
 OPCODE_DEFS = {
     0: 'QUERY',
     1: 'IQUERY',
