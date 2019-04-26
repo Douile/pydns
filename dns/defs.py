@@ -33,7 +33,7 @@ TYPE_DEFS = {
     37: 'CERT',
     39: 'DNAME',
     41: 'OPT',
-    42, 'APL',
+    42: 'APL',
     43: 'DS',
     44: 'SSHFP',
     45: 'IPSECKEY',
