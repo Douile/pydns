@@ -3,9 +3,13 @@ from .Name import Name
 from .defs import I_TYPE_DEFS, I_CLASS_DEFS
 
 class Record:
-    def __init__(self,names,type,cclass,ttl,rdata):
+    def __init__(self,names,rtype,cclass,ttl,rdata):
+        if isinstance(rtype,str):
+            rtype = I_TYPE_DEFS.get(rtype)
+        if isinstance(cclass,str):
+            cclass = I_CLASS_DEFS.get(cclass)
         self.names = Name(names)
-        self.type = type
+        self.type = rtype
         self.cclass = cclass
         self.ttl = ttl
         self.rdata = rdata
@@ -27,18 +31,18 @@ class Record:
 class ARecord(Record):
     def __init__(self,name,addr):
         rdata = struct.pack('>I',addr)
-        super().__init__(name,I_TYPE_DEFS.get('A'),I_CLASS_DEFS.get('IN'),0,rdata)
+        super().__init__(name,'A','IN',0,rdata)
 
 class TXTRecord(Record):
     def __init__(self,name,content):
         rdata = bytes(content,'utf-8')
         rdata = struct.pack('>H',len(rdata))+rdata
-        super().__init__(name,I_TYPE_DEFS.get('TXT'),I_CLASS_DEFS.get('IN'),0,rdata)
+        super().__init__(name,'TXT','IN',0,rdata)
 
 class DomainRecord(Record):
     def __init__(self,name,content):
         rdata = bytes(Name(content))
-        super().__init__(name,I_TYPE_DEFS.get(self.TYPE),I_CLASS_DEFS.get('IN'),0,rdata)
+        super().__init__(name,self.TYPE,'IN',0,rdata)
 
 class NSRecord(DomainRecord):
     TYPE = 'NS'
