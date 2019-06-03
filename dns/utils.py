@@ -45,7 +45,12 @@ def ipv4_to_int(ip):
 def transform_bindings(bindings):
     transformed = {}
     for name in bindings:
-        ip = ipv4_to_int(bindings[name])
-        if ip is not None:
-            transformed[name] = ip
+        host_bindings = bindings[name]
+        for i in range(0,len(host_bindings)):
+            binding = host_bindings[i]
+            if binding[0] == 'A':
+                ip = ipv4_to_int(binding[1])
+                if ip is not None:
+                    host_bindings[i] = (binding[0],ip)
+        transformed[name] = host_bindings
     return transformed

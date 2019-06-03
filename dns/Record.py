@@ -34,3 +34,12 @@ class TXTRecord(Record):
         rdata = bytes(content,'utf-8')
         rdata = struct.pack('>H',len(rdata))+rdata
         super().__init__(name,I_TYPE_DEFS.get('TXT'),I_CLASS_DEFS.get('IN'),0,rdata)
+
+def generate_record(name,binding):
+    t = binding[0]
+    v = binding[1]
+    if t == 'A':
+        return ARecord(name,v)
+    elif t == 'TXT':
+        return TXTRecord(name,v)
+    return None
