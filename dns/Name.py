@@ -4,6 +4,11 @@ class Name:
             self.names = names
         elif isinstance(names,Name):
             self.names = names.names
+        elif isinstance(names,str):
+            t_names = names.split('.')
+            self.names = []
+            for name in t_names:
+                self.names.append(bytes(name,'utf-8'))
         else:
             self.names = []
     def __repr__(self):
