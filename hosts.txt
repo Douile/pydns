@@ -1,3 +1,4 @@
+1.0.0.127.in-addr.arpa PTR py.dns
 test.com 127.0.0.1
 google.com 216.58.204.14
 www.google.com A 216.58.206.100

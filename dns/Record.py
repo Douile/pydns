@@ -35,11 +35,17 @@ class TXTRecord(Record):
         rdata = struct.pack('>H',len(rdata))+rdata
         super().__init__(name,I_TYPE_DEFS.get('TXT'),I_CLASS_DEFS.get('IN'),0,rdata)
 
-class NSRecord(Record):
+class DomainRecord(Record):
     def __init__(self,name,content):
         rdata = bytes(Name(content))
-        super().__init__(name,I_TYPE_DEFS.get('NS'),I_CLASS_DEFS.get('IN'),0,rdata)
+        super().__init__(name,I_TYPE_DEFS.get(self.TYPE),I_CLASS_DEFS.get('IN'),0,rdata)
 
+class NSRecord(DomainRecord):
+    TYPE = 'NS'
+    
+class PTRRecord(DomainRecord):
+    TYPE = 'PTR'
+        
 def generate_record(name,binding):
     t = binding[0]
     v = binding[1]
@@ -49,4 +55,6 @@ def generate_record(name,binding):
         return TXTRecord(name,v)
     elif t == 'NS':
         return NSRecord(name,v)
+    elif t == 'PTR':
+        return PTRRecord(name,v)
     return None
