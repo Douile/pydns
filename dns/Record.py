@@ -49,7 +49,10 @@ class NSRecord(DomainRecord):
     
 class PTRRecord(DomainRecord):
     TYPE = 'PTR'
-        
+
+class CNAMERecord(DomainRecord):
+    TYPE = 'CNAME'
+
 def generate_record(name,binding):
     t = binding[0]
     v = binding[1]
@@ -61,4 +64,6 @@ def generate_record(name,binding):
         return NSRecord(name,v)
     elif t == 'PTR':
         return PTRRecord(name,v)
+    elif t == 'CNAME':
+        return CNAMERecord(name,v)
     return None

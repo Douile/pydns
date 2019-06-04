@@ -4,3 +4,4 @@ google.com 216.58.204.14
 www.google.com A 216.58.206.100
 google.com TXT Test text record
 google.com NS ns.server.com
+google.com CNAME test.google.com
