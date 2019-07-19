@@ -39,13 +39,23 @@ optional arguments:
   -d, --debug           Print debug messages
 ```
 
-## Testing _(Windows)_
+## Testing 
+
+### _Windows_
 
 1. Open `nslookup`
 2. Enter `SET debug`
 3. Optional enter `SET TYPE=ALL`
 4. Enter `server 127.0.0.1` or whatever IP you bound to (must be using port 53)
 5. Query a domain name you have in your `hosts.txt` configuration
+
+### _Linux_
+
+```bash
+drill @127.0.0.1 domain
+```
+
+See the [drill manpage](https://linux.die.net/man/1/drill) for more info
 
 ## License
 [MIT license](LICENSE)
